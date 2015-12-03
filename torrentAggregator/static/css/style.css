@@ -1,0 +1,22 @@
+body {
+	 background: url("/static/img/index-bg.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+	font-family:"Comic Sans MS", cursive, sans-serif;
+}
+.container {
+	width:40%;
+	margin: 100px auto;
+}
+h1 {
+	font-family: 'Indie Flower', cursive;
+    text-align: center;
+}
+input {
+	width:100%;
+	height:40px;
+    font-size: 22px;
+
+}
