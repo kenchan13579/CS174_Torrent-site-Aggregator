@@ -11,7 +11,16 @@ def index ( req ):
   return HttpResponse(template.render(context))
 
 def search(req):
-    data = scrapper.scrape(req.GET["query"])
-    print(len(data))
-    return render(req,"result.html",{"test" : data},
+    parameter = {}
+    if len(req.GET["query"]) <= 3:
+        parameter["error"] = "Query too short"
+    else :
+        data = scrapper.scrape(req.GET["query"])
+        if len(data) >= 0 :
+            print(len(data))
+            parameter["data"] = data
+        else:
+
+            parameter["error"] = "No result found"
+    return render(req,"result.html",parameter,
         content_type="text/html")

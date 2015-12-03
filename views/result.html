@@ -2,28 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Result</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <body>
-    <table>
+    <div class="container">
+    {% if error %}
+    <h1 class="alert alert-danger">{{ error }}</h1>
+    {% else %}
+    <table class="table table-bordered table-hover">
         <tr>
             <td>Title</td>
-            <td>Comment(s)</td>
-            <td>Size</td>
-            <td>Upload Time</td>
-            <td>Seeds</td>
-            <td>Leeches</td>
+            <td class="success">Comment(s)</td>
+            <td class="active">Size</td>
+            <td class="danger">Upload Time</td>
+            <td class="success">Seeds</td>
+            <td class="warning">Leeches</td>
         </tr>
-        {% for torrent in test %}
+        {% for torrent in data %}
         <tr>
             <td><a href="{{torrent.link}}">{{torrent.title}}</td>
-            <td>{{ torrent.numOfComments }}</td>
-            <td>{{ torrent.size }}</td>
-            <td>{{ torrent.uploadTime }}</td>
-            <td>{{ torrent.seeds }}</td>
-            <td>{{ torrent.leeches }}</td>
+            <td class="success">{{ torrent.numOfComments }}</td>
+            <td class="active">{{ torrent.size }}</td>
+            <td class="danger"> {{ torrent.uploadTime }}</td>
+            <td class="success">{{ torrent.seeds }}</td>
+            <td class="warning">{{ torrent.leeches }}</td>
         </tr>
         {% endfor %}
+        {% endif %}
     </table>
+    </div>
 </body>
 </html>

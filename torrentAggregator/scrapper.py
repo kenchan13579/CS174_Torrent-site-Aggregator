@@ -34,9 +34,9 @@ def piratebayScrapper(query  , url=None):
         if len(sizeInfo) == 4:
         #hard code for case when there is new video which will display as XX min ago
         # with <b> tag
-            torrent["size"] = newSoup.select("font.detDesc b")[0].string
+            torrent["uploadTime"] = newSoup.select("font.detDesc b")[0].string
             res = re.match(r".*Size\s*(.*?),",sizeInfo[2])
-            torrent["uploadTime"] = res.group(1).strip()
+            torrent["size"] = res.group(1).strip()
         else:
             sizeInfo = sizeInfo[0]
             res = re.match(r"Uploaded\s*(.*?),\s*Size(.*?),",sizeInfo);
@@ -113,6 +113,6 @@ def getUploadTime(time) :
 
 def scrape(query):
     data  = []
-  #  data += piratebayScrapper(query)
+    data += piratebayScrapper(query)
     data += kickassScrapper(query)
     return data
