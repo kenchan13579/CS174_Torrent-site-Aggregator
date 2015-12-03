@@ -21,7 +21,7 @@
         </tr>
         {% for torrent in data %}
         <tr>
-            <td><a href="{{torrent.link}}">{{torrent.title}}</td>
+            <td><a target="_blank" href="{{torrent.link}}">{{torrent.title}}</td>
             <td class="success">{{ torrent.numOfComments }}</td>
             <td class="active">{{ torrent.size }}</td>
             <td class="danger"> {{ torrent.uploadTime }}</td>
