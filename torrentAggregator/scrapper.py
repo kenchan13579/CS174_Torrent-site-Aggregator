@@ -2,14 +2,15 @@ import re
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
+import threading
 ## Global var
 PB_DOMAIN = "http://thepiratebay.la"
 PB_SEARCH_URL = PB_DOMAIN + "/search/"
 KICKASS_DOMAIN = "http://kickasstorrents.video"
 KICKASS_SEARCH_URL = KICKASS_DOMAIN + "/usearch/"
+#result = [] #final result
 # scrape data from piratebay
-def piratebayScrapper(query  , url=None):
-    result = []
+def piratebayScrapper(query , result , url=None):
     searchURL = ""
     if url is None:
         res = re.match( r'\W*([a-zA-Z0-9\s]*)\W*' , query)
@@ -51,17 +52,23 @@ def piratebayScrapper(query  , url=None):
         commentPattern = "title=\"This torrent has (.*?) comments.\""
         theComment = re.findall(commentPattern, str(theComment))
         torrent["numOfComments"] = "".join(theComment)
+        torrent["from"] = "Pirate Bay"
         if not theComment:
             torrent["numOfComments"] = "0"
         result.append(torrent) # add to the result
     if url is None:
         pagination = soup.select("div[align=center] a")[:-1]
+        thread_list = []
         for p in pagination:
-           result += piratebayScrapper(None, PB_DOMAIN+p["href"])
-    return result
+            thread_list.append(threading.Thread(target=piratebayScrapper , args=(None,result, PB_DOMAIN+p["href"])))
+        # run the threads !
+        for t in thread_list:
+            t.start()
+        # wait for them to finish
+        for t in thread_list:
+            t.join()
 
-def kickassScrapper(query , url= None):
-    result = []
+def kickassScrapper(query ,result, url= None):
     req = None
     if url is None:
         req = Request(KICKASS_SEARCH_URL+"/"+query, headers={'User-Agent': 'Mozilla/5.0'})
@@ -72,7 +79,7 @@ def kickassScrapper(query , url= None):
     try :
         html = urlopen(req).read()
     except:
-        return result
+        return
     soup = BeautifulSoup(html, "html.parser")
     rows = soup.select("table.data tr")[1:] # ignore the first header row
     for row in rows:
@@ -90,13 +97,14 @@ def kickassScrapper(query , url= None):
         torrent["uploadTime"] = getUploadTime(columns[3].string)
         torrent["seeds"] = columns[4].string
         torrent["leeches"] = columns[5].string
-
+        torrent["from"] = "Kickass Torrents"
         result.append(torrent)
     if url == None:
         pagination = soup.select("a[data-page]")
         for p in pagination:
-            result += kickassScrapper(None, KICKASS_DOMAIN+p["href"])
-    return result
+            print(KICKASS_DOMAIN+p["href"])
+            kickassScrapper(None, result,KICKASS_DOMAIN+p["href"])
+
 
 def getUploadTime(time) :
     res = re.match(r"([0-9]{1,2})\s([a-zA-Z]*)",time)
@@ -112,7 +120,8 @@ def getUploadTime(time) :
     return (today - timeDifference)
 
 def scrape(query):
-    data  = []
-    data += piratebayScrapper(query)
-    data += kickassScrapper(query)
-    return data
+    result = []
+    piratebayScrapper(query,result)
+    kickassScrapper(query,result)
+    return result
+

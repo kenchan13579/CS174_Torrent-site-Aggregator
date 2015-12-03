@@ -19,6 +19,7 @@ def search(req):
         if len(data) >= 0 :
             print(len(data))
             parameter["data"] = data
+            parameter["dataLength"] = len(data)
         else:
 
             parameter["error"] = "No result found"
