@@ -5,6 +5,25 @@
     <title>Document</title>
 </head>
 <body>
-    {{ d }}
+    <table>
+        <tr>
+            <td>Title</td>
+            <td>Comment(s)</td>
+            <td>Size</td>
+            <td>Upload Time</td>
+            <td>Seeds</td>
+            <td>Leeches</td>
+        </tr>
+        {% for torrent in test %}
+        <tr>
+            <td><a href="{{torrent.link}}">{{torrent.title}}</td>
+            <td>{{ torrent.numOfComments }}</td>
+            <td>{{ torrent.size }}</td>
+            <td>{{ torrent.uploadTime }}</td>
+            <td>{{ torrent.seeds }}</td>
+            <td>{{ torrent.leeches }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

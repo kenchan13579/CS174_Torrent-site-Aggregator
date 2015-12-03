@@ -11,7 +11,7 @@ def index ( req ):
   return HttpResponse(template.render(context))
 
 def search(req):
-    data = scrapper.scrape(req["query"])
-    return render("result.html",{{
-        d : data
-    }})
+    data = scrapper.scrape(req.GET["query"])
+    print(len(data))
+    return render(req,"result.html",{"test" : data},
+        content_type="text/html")

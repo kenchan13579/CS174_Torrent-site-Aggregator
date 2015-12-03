@@ -113,6 +113,6 @@ def getUploadTime(time) :
 
 def scrape(query):
     data  = []
-    data += piratebayScrapper(query)
+  #  data += piratebayScrapper(query)
     data += kickassScrapper(query)
     return data
