@@ -12,7 +12,7 @@ def index ( req ):
 
 def search(req):
     parameter = {}
-    if len(req.GET["query"]) <= 3:
+    if len(req.GET["query"]) <= 2:
         parameter["error"] = "Query too short"
     else :
         data = scrapper.scrape(req.GET["query"])
