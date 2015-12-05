@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Result</title>
+     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 </head>
 <body>
@@ -24,7 +25,7 @@
             <td class="success">From</td>
         </tr>
         {% for torrent in data %}
-        <tr>
+        <tr class="pagination-item">
             <td><a target="_blank" href="{{torrent.link}}">{{torrent.title}}</td>
             <td class="success">{{ torrent.numOfComments }}</td>
             <td class="active">{{ torrent.size }}</td>
@@ -38,4 +39,6 @@
     </table>
     </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="{% static 'js/pagination.js' %}"></script>
 </html>
