@@ -141,7 +141,7 @@ def scrape(query):
     kickassScrapper(query,result)
     return result
 
-#input can be mm-dd hh:MM or mm-dd-yyyy
+#input can be mm-dd hh:MM or mm-dd yyyy
 def parseDate(dateString):
     result = ""
     theString = dateString.split("-")
