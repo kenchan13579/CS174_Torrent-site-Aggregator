@@ -1,22 +1,95 @@
-body {
-	 background: url("/static/img/index-bg.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-	font-family:"Comic Sans MS", cursive, sans-serif;
+body
+{
+    font-family: 'Indie Flower', cursive;
+
+    background: url('/static/img/index-bg.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+       -moz-background-size: cover;
+         -o-background-size: cover;
+            background-size: cover;
 }
-.container {
-	width:40%;
-	margin: 100px auto;
+p {
+	 font-family: 'Indie Flower', cursive;
 }
-h1 {
-	font-family: 'Indie Flower', cursive;
+.container
+{
+    width: 40%;
+    margin: 20% auto;
+}
+h1
+{
+    
+		color:white;
+		font-size: 5rem;
     text-align: center;
 }
-input {
-	width:100%;
-	height:40px;
-    font-size: 22px;
+form {
+	margin-top: 25px;
+}
+/** cool radio buttons */
+.my-label {
+	color:white;
+	font-weight: bolder;
+	font-size: 2em;
+}
+#index ul {
+		display:inline-block;
+    list-style: none
+}
+#index ul li {
+    display:inline-block;
+    margin-right:5px;
+    border:1px solid white;
+    color:white;
+    font-weight: bolder;
+}
+.my-radio {
+	display: inline-block;
+	position:relative;
+	padding:10px 5px 0px 20px;
+}
+input[type=radio] {
+	display:none;
+}
+input[type="radio"] p {
+}
+input[type=radio]:checked + p:after {
+    content:"";
+    width:100%;
+    background-color: rgba(195,238,231, 0.5);
+    position:absolute;
+    display:block;
+    height:100%;
+    top:0;
+    left:0;
+    z-index:-1;
+}
+input[type=radio]:checked + p:before {
+    content:"\f00c";
+    position:absolute;
+    left:5px;
+    top:10px;
+    margin-right:15px;
+}
+#input-search
+{
+    font-size: 2rem;
+		font-family: 'Indie Flower', cursive;
+		letter-spacing: 3px;
+    width: 100%;
+    height: 60px;
+    border:none;
+}
+#input-search:focus {
+	outline:none;
+}
 
+@media ( max-width: 1080px) {
+	.container {
+		width:80%;
+	}
+	h1 {
+		font-size: 2rem;
+	}
+	
 }

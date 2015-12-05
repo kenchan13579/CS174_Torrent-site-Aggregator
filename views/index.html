@@ -8,14 +8,47 @@
 	<title>Torrent Sites aggregator in Python</title>
 	{% load static %}
 	<link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
 	<div class="container">
 	<h1>What ya lookin for?</h1>
-	<form method="get" action="/search">
-		<input type="text" name="query">
-		<input type="submit" style="display:none">
+	<form id="index" method="get" action="/search">
+		<div  class="form-group" style="position:relative;">
+			<input id="input-search" type="text" name="query" placeholder="Type a movie name here to search torrents">
+		</div>
+		<div class="form-group" >
+		<span class="my-label">Video Quality :</span>
+		<ul>
+            <li>
+                <div class="my-radio">
+                     <label>
+                        <input type="radio" name="quality" value="all">
+                        <p class="fa">All</p>
+                    </label>
+                </div>
+             </li>  
+              <li>
+                <div class="my-radio">
+                     <label>
+                        <input type="radio" name="quality" value="720">
+                        <p class="fa">720p</p>
+                    </label>
+                </div>
+             </li>   
+             <li>
+                <div class="my-radio">
+                     <label>
+                        <input type="radio" name="quality" value="1080">
+                        <p class="fa">1080p</p>
+                    </label>
+                </div>
+             </li>  
+     </ul>
+     </div>
+		<center><input type="submit" class="btn btn-primary"></center>
 	</form>
 	</div>
 </body>
