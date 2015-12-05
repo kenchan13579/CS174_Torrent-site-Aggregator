@@ -37,15 +37,21 @@ def piratebayScrapper(query , result , url=None):
         # with <b> tag
             torrent["uploadTime"] = newSoup.select("font.detDesc b")[0].string
             res = re.match(r".*Size\s*(.*?),",sizeInfo[2])
-            torrent["size"] = res.group(1).strip()
+            formatter = res.group(1).strip()
+            formatter = formatter.replace("i", "")
+            torrent["size"] = formatter
         else:
             sizeInfo = sizeInfo[0]
             res = re.match(r"Uploaded\s*(.*?),\s*Size(.*?),",sizeInfo);
-            torrent["size"] = res.group(2).strip()
+            formatter = res.group(2).strip()
+            formatter = formatter.replace("i","")
+            torrent["size"] = formatter
             torrent["uploadTime"] = res.group(1).strip()
         seedsAndLeech = newSoup.find_all('td',attrs={'align':'right'})
-        torrent["seeds"] = re.findall(">(.*?)<" , str(seedsAndLeech[0]))
-        torrent["leeches"] = re.findall(">(.*?)<" , str(seedsAndLeech[1]))
+        seeds = re.findall(">(.*?)<" , str(seedsAndLeech[0]))
+        leeches = re.findall(">(.*?)<" , str(seedsAndLeech[1]))
+        torrent["seeds"] = "".join(seeds)
+        torrent["leeches"] = "".join(seeds)
 
         theComment = newSoup.find('img', src="//thepiratebay.la/static/img/icon_comment.gif")
 ##        print(theComment)
