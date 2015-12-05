@@ -1,4 +1,6 @@
 import re
+import time
+from datetime import date
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
@@ -35,7 +37,11 @@ def piratebayScrapper(query , result , url=None):
         if len(sizeInfo) == 4:
         #hard code for case when there is new video which will display as XX min ago
         # with <b> tag
-            torrent["uploadTime"] = newSoup.select("font.detDesc b")[0].string
+            #formatter formats the data to make uniform.
+            #Here it adjusts to Kickasstorrents time and size formats
+            timeFormatter = newSoup.select("font.detDesc b")[0].string
+            timeFormatter = parseDate(timeFormatter)
+            torrent["uploadTime"] = timeFormatter
             res = re.match(r".*Size\s*(.*?),",sizeInfo[2])
             formatter = res.group(1).strip()
             formatter = formatter.replace("i", "")
@@ -46,7 +52,11 @@ def piratebayScrapper(query , result , url=None):
             formatter = res.group(2).strip()
             formatter = formatter.replace("i","")
             torrent["size"] = formatter
-            torrent["uploadTime"] = res.group(1).strip()
+            formatter = res.group(1).strip()
+            formatter = formatter.split("\\xa0")
+            formatter = formatter[0]
+            formatter = parseDate(formatter)
+            torrent["uploadTime"] = formatter
         seedsAndLeech = newSoup.find_all('td',attrs={'align':'right'})
         seeds = re.findall(">(.*?)<" , str(seedsAndLeech[0]))
         leeches = re.findall(">(.*?)<" , str(seedsAndLeech[1]))
@@ -130,4 +140,30 @@ def scrape(query):
     piratebayScrapper(query,result)
     kickassScrapper(query,result)
     return result
+
+#input can be mm-dd hh:MM or mm-dd-yyyy
+def parseDate(dateString):
+    result = ""
+    theString = dateString.split("-")
+    second = theString[1]
+    if  second[5] != ":":
+        theMonth = int(theString[0])
+        theYear = second[3:7]
+        theDay = second[0:2]
+        result = convertDate(int(theMonth), int(theDay), int(theYear))
+    else:
+        theMonth = int(theString[0])
+        theYear = 2015
+        theDay = second[0:2]
+        result = convertDate(int(theMonth), int(theDay), theYear)
+    return result
+
+def convertDate(m, d, y):
+    if y == 0:
+        tdate = date(year=2015,month=m,day=d)
+    else:
+        tdate = date(month=m,day=d, year =y)
+    return tdate
+    #return str(tdate.strftime("%b %m, %Y"))
+    
 
