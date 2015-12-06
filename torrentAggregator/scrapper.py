@@ -95,13 +95,15 @@ scrapper for kickass torrent
 def kickassScrapper(query ,result, url= None):
     req = None
     if url is None:
-        req = Request(KICKASS_SEARCH_URL+"/"+query, headers={'User-Agent': 'Mozilla/5.0'})
+        link = KICKASS_SEARCH_URL+query;
+        print(link)
+        req = Request(link, headers={'User-Agent': 'Mozilla/5.0'})
     else:
         # pagination links
-        req = url
+        print(url)
+        req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     try :
         # the pagination links seem to prohibit scraper
-        print(req)
         html = urlopen(req).read()
     except Exception as e:
         print(e)
@@ -121,17 +123,23 @@ def kickassScrapper(query ,result, url= None):
             torrent["numOfComments"] = "0"
         columns = newSoup.select("td")
         torrent["size"] = parseSize(columns[1].contents)
-        print(torrent["size"])
         torrent["uploadTime"] = getUploadTime(columns[3].string)
         torrent["seeds"] = columns[4].string
         torrent["leeches"] = columns[5].string
         torrent["from"] = "Kickass Torrents"
         result.append(torrent)
     if url == None:
-        pagination = soup.select("a[data-page]")
+        pagination = soup.find_all("a", class_= "turnoverButton siteButton bigButton" , attrs={'rel':True})
+        thread_list = [] # list to store threads
         for p in pagination:
-            print(KICKASS_DOMAIN+p["href"])
-            kickassScrapper(None, result,KICKASS_DOMAIN+p["href"])
+            ## create threads and put them into the list first
+            thread_list.append(threading.Thread(target=kickassScrapper , args=(None,result, KICKASS_DOMAIN+p["href"])))
+        # run the threads !
+        for t in thread_list:
+            t.start()
+        # wait for them to finish
+        for t in thread_list:
+            t.join()
 
 '''
 parse kickass's date format to mmm-dd-yyyy
@@ -213,6 +221,3 @@ def parseSize(contents):
         return None
     else:
         return contents[0].string + contents[1].string
-test = []
-kickassScrapper("avenger" , test )
-print(len(test))
