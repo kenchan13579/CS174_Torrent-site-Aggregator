@@ -10,17 +10,21 @@ PB_DOMAIN = "http://thepiratebay.la"
 PB_SEARCH_URL = PB_DOMAIN + "/search/"
 KICKASS_DOMAIN = "http://kickasstorrents.video"
 KICKASS_SEARCH_URL = KICKASS_DOMAIN + "/usearch/"
-#result = [] #final result
-# scrape data from piratebay
+
+'''
+scrape data from piratebay
+'''
 def piratebayScrapper(query , result , url=None):
     searchURL = ""
     if url is None:
         res = re.match( r'\W*([a-zA-Z0-9\s]*)\W*' , query)
-        if res.group(1) == "" : # if no pattern is matched , exit
+         # check query is valid if no pattern is matched , exit
+        if res.group(1) == "" :
             return
         searchURL = PB_SEARCH_URL + res.group(1).strip() + "/0/99/200"
         print(searchURL)
     else:
+        #will scrape pagination links
         searchURL = url
         print(url)
     req = Request(searchURL, headers={'User-Agent': 'Mozilla/5.0'})
@@ -32,6 +36,7 @@ def piratebayScrapper(query , result , url=None):
         newSoup = BeautifulSoup(str(row),"html.parser")
         link = newSoup.select("a.detLink")[0]
         torrent["title"] = link.string
+        torrent["quality"] = getQuality(torrent['title'])
         torrent["link"] = PB_DOMAIN + link["href"]
         sizeInfo = newSoup.select("font.detDesc")[0].contents
         if len(sizeInfo) == 4:
@@ -61,10 +66,9 @@ def piratebayScrapper(query , result , url=None):
         seeds = re.findall(">(.*?)<" , str(seedsAndLeech[0]))
         leeches = re.findall(">(.*?)<" , str(seedsAndLeech[1]))
         torrent["seeds"] = "".join(seeds)
-        torrent["leeches"] = "".join(seeds)
+        torrent["leeches"] = "".join(leeches)
 
         theComment = newSoup.find('img', src="//thepiratebay.la/static/img/icon_comment.gif")
-##        print(theComment)
         commentPattern = "title=\"This torrent has (.*?) comments.\""
         theComment = re.findall(commentPattern, str(theComment))
         torrent["numOfComments"] = "".join(theComment)
@@ -74,8 +78,9 @@ def piratebayScrapper(query , result , url=None):
         result.append(torrent) # add to the result
     if url is None:
         pagination = soup.select("div[align=center] a")[:-1]
-        thread_list = []
+        thread_list = [] # list to store threads
         for p in pagination:
+            ## create threads and put them into the list first
             thread_list.append(threading.Thread(target=piratebayScrapper , args=(None,result, PB_DOMAIN+p["href"])))
         # run the threads !
         for t in thread_list:
@@ -83,18 +88,22 @@ def piratebayScrapper(query , result , url=None):
         # wait for them to finish
         for t in thread_list:
             t.join()
-
+'''
+scrapper for kickass torrent
+'''
 def kickassScrapper(query ,result, url= None):
     req = None
     if url is None:
         req = Request(KICKASS_SEARCH_URL+"/"+query, headers={'User-Agent': 'Mozilla/5.0'})
-        print(req)
     else:
-        print(url)
+        # pagination links
         req = url
     try :
+        # the pagination links seem to prohibit scraper
+        print(req)
         html = urlopen(req).read()
-    except:
+    except Exception as e:
+        print(e)
         return
     soup = BeautifulSoup(html, "html.parser")
     rows = soup.select("table.data tr")[1:] # ignore the first header row
@@ -104,6 +113,7 @@ def kickassScrapper(query ,result, url= None):
         link = newSoup.select("a.cellMainLink")[0]
         torrent["link"] = KICKASS_DOMAIN+link["href"]
         torrent["title"] = "".join(re.findall(">(.*?)<", str(link)))
+        torrent["quality"] = getQuality(torrent['title'])
         try :
             torrent["numOfComments"] = newSoup.select(".icommentjs > .iconvalue")[0].string
         except:
@@ -121,7 +131,9 @@ def kickassScrapper(query ,result, url= None):
             print(KICKASS_DOMAIN+p["href"])
             kickassScrapper(None, result,KICKASS_DOMAIN+p["href"])
 
-
+'''
+parse kickass's date format to mmm-dd-yyyy
+'''
 def getUploadTime(time) :
     res = re.match(r"([0-9]{1,2})\s([a-zA-Z]*)",time)
     num = res.group(1)
@@ -133,12 +145,22 @@ def getUploadTime(time) :
         timeDifference = timedelta(weeks = int(num)*4)
     elif month_OR_year.find("year") !=-1:
         timeDifference = timedelta(days = int(num)*365)
+    elif month_OR_year.find("day") != -1:
+        timeDifference = timedelta(days = int(num))
+    else:
+        timeDifference = timedelta(days=0)
     return (today - timeDifference)
 
-def scrape(query):
+'''
+    start scraping and return an array of filtered torrent obj
+'''
+def scrape(query ,filters=None):
     result = []
     piratebayScrapper(query,result)
     kickassScrapper(query,result)
+    if filters is not None:
+        for key,val in filters.items():
+            result = list(filter(lambda x: x[str(key)] == val ,result))
     return result
 
 #input can be mm-dd hh:MM or mm-dd yyyy
@@ -165,5 +187,15 @@ def convertDate(m, d, y):
         tdate = date(month=m,day=d, year =y)
     return tdate
     #return str(tdate.strftime("%b %m, %Y"))
-    
 
+'''
+    Get quality of the torrent video based on keyword in the title
+    720,1080,or none
+'''
+def getQuality(title):
+    if title.find("720") != -1 :
+        return "720p"
+    elif title.find("1080") != -1:
+        return "1080p"
+    else:
+        return "Unknown"

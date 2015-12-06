@@ -4,24 +4,28 @@ from django.shortcuts import render
 from . import scrapper
 # Create your views here.
 def index ( req ):
-  template = loader.get_template("index.html")
-  context = RequestContext(req , {
-    "from" : "Ken"
-  })
-  return HttpResponse(template.render(context))
+  return render(req,"index.html")
 
 def search(req):
     parameter = {}
     if len(req.GET["query"]) <= 2:
         parameter["error"] = "Query too short"
     else :
-        data = scrapper.scrape(req.GET["query"])
+        filters = {}
+        data = []
+        if "quality" in req.GET and len(req.GET["quality"])>0:
+          filters["quality"] = req.GET["quality"]
+
+        if len(filters)==0 :
+          data = scrapper.scrape(req.GET["query"])
+        else :
+          data = scrapper.scrape(req.GET["query"] , filters)
+
         if len(data) >= 0 :
-            print(len(data))
+            print("Number of Result {}".format(len(data))  )
             parameter["data"] = data
             parameter["dataLength"] = len(data)
         else:
-
             parameter["error"] = "No result found"
     return render(req,"result.html",parameter,
         content_type="text/html")

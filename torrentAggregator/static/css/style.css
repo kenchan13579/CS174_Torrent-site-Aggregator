@@ -13,12 +13,12 @@ p {
 }
 .container
 {
-    width: 40%;
+    width: 50%;
     margin: 20% auto;
 }
 h1
 {
-    
+
 		color:white;
 		font-size: 5rem;
     text-align: center;
@@ -91,5 +91,5 @@ input[type=radio]:checked + p:before {
 	h1 {
 		font-size: 2rem;
 	}
-	
+
 }

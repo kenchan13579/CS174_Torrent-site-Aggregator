@@ -19,6 +19,7 @@
         <tr>
             <td>Title</td>
             <td class="success">Comment(s)</td>
+            <td class="warning">Quality</td>
             <td class="active">Size</td>
             <td class="danger">Upload Time</td>
             <td class="success">Seeds</td>
@@ -29,6 +30,7 @@
         <tr class="pagination-item">
             <td><a target="_blank" href="{{torrent.link}}">{{torrent.title}}</td>
             <td class="success">{{ torrent.numOfComments }}</td>
+            <td class="warning">{{torrent.quality}}</td>
             <td class="active">{{ torrent.size }}</td>
             <td class="danger"> {{ torrent.uploadTime }}</td>
             <td class="success">{{ torrent.seeds }}</td>
