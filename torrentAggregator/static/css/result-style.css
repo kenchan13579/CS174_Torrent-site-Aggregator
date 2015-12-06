@@ -1,0 +1,44 @@
+/** tags **/
+.tag {
+    padding:3px 8px;
+    display:inline-block;
+    color:white;
+    border-radius: 7px;
+}
+.tag-red {
+    background-color: #FF3366;
+}
+.tag-green {
+    background-color: #00a05f;
+}
+.tag-blue {
+    background-color:#7b68ee;
+}
+.tag-purple {
+    background-color: #9400d3;
+}
+.tag-orange {
+    background-color:#FFA500;
+}
+.tag-yellow {
+    background-color: #f7c003;
+}
+.tag-lblue {
+    background-color: #80c6e7;
+}
+#btn-back {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+/** pagaination button **/
+
+#prevPage {
+    position: fixed;
+    left:0;
+    top:50%;
+}
+#nextPage {
+    position: fixed;
+    right: 0;
+    top: 50%;

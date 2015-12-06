@@ -6,36 +6,47 @@
      {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/result-style.css' %}">
 </head>
 <body>
-    <div class="container">
-    <a href="/" class="btn btn-primary">Back</a>
+    <div class="container" style="padding-top:40px">
+    <a id="btn-back" href="/" class="btn btn-primary">Back</a>
     {% if error %}
     <h1 class="alert alert-danger">{{ error }}</h1>
 
     {% else %}
     <h2 class="alert alert-success">{{dataLength}} result(s) found!</h2>
+    <div style="margin-bottom:20px">
+        Tags:
+         <span class="tag tag-red">Comment(s)</span>
+            <span class="tag tag-orange">Quality</span>
+            <span class="tag tag-green">Size</span>
+            <span class="tag tag-blue">Upload Time</span>
+            <span class="tag tag-purple">Scrapped from</span>
+    </div>
+
     <table class="table table-bordered table-hover">
-        <tr>
-            <td>Title</td>
-            <td class="success">Comment(s)</td>
-            <td class="warning">Quality</td>
-            <td class="active">Size</td>
-            <td class="danger">Upload Time</td>
-            <td class="success">Seeds</td>
-            <td class="warning">Leeches</td>
-            <td class="success">From</td>
+        <tr class="info">
+            <td >Title</td>
+            <td >Seeds</td>
+            <td >Leeches</td>
         </tr>
         {% for torrent in data %}
         <tr class="pagination-item">
-            <td><a target="_blank" href="{{torrent.link}}">{{torrent.title}}</td>
-            <td class="success">{{ torrent.numOfComments }}</td>
-            <td class="warning">{{torrent.quality}}</td>
-            <td class="active">{{ torrent.size }}</td>
-            <td class="danger"> {{ torrent.uploadTime }}</td>
-            <td class="success">{{ torrent.seeds }}</td>
-            <td class="warning">{{ torrent.leeches }}</td>
-            <td class="success">{{ torrent.from }}</td>
+            <td>
+            <a target="_blank" href="{{torrent.link}}">{{torrent.title}}</a>
+            {% if torrent.numOfComments != '0' %}
+            <span class='tag tag-red'>{{ torrent.numOfComments }}</span>
+            {% endif %}
+            {% if torrent.quality != 'Unknown' %}
+            <span class="tag tag-orange">{{torrent.quality}}</span>
+            {% endif %}
+            <span class="tag tag-green">{{ torrent.size }}</span>
+            <span class="tag tag-blue">{{ torrent.uploadTime }}</span>
+            <span class="tag tag-purple">{{ torrent.from }}</span>
+            </td>
+            <td class="warning">{{ torrent.seeds }}</td>
+            <td class="success">{{ torrent.leeches }}</td>
         </tr>
         {% endfor %}
         {% endif %}
