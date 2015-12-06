@@ -88,6 +88,7 @@ def piratebayScrapper(query , result , url=None):
         # wait for them to finish
         for t in thread_list:
             t.join()
+
 '''
 scrapper for kickass torrent
 '''
@@ -119,7 +120,8 @@ def kickassScrapper(query ,result, url= None):
         except:
             torrent["numOfComments"] = "0"
         columns = newSoup.select("td")
-        torrent["size"] = columns[1].string
+        torrent["size"] = parseSize(columns[1].contents)
+        print(torrent["size"])
         torrent["uploadTime"] = getUploadTime(columns[3].string)
         torrent["seeds"] = columns[4].string
         torrent["leeches"] = columns[5].string
@@ -152,7 +154,7 @@ def getUploadTime(time) :
     return (today - timeDifference)
 
 '''
-    start scraping and return an array of filtered torrent obj
+    start scraping and return an array of filtered torrent obj sorted by # of seeds
 '''
 def scrape(query ,filters=None):
     result = []
@@ -160,7 +162,8 @@ def scrape(query ,filters=None):
     kickassScrapper(query,result)
     if filters is not None:
         for key,val in filters.items():
-            result = list(filter(lambda x: x[str(key)] == val ,result))
+            result = list(filter(lambda torrent: torrent[str(key)] == val ,result))
+    result = sorted(result, key = lambda torrent : int(torrent["seeds"]) , reverse = True)
     return result
 
 #input can be mm-dd hh:MM or mm-dd yyyy
@@ -199,3 +202,17 @@ def getQuality(title):
         return "1080p"
     else:
         return "Unknown"
+
+'''
+    Get size from kickass parse e.g. -> 15 <span>GB</span>
+'''
+def parseSize(contents):
+    if len(contents) == 1 :
+        return contents[0].string
+    elif len(contents) == 0 :
+        return None
+    else:
+        return contents[0].string + contents[1].string
+test = []
+kickassScrapper("avenger" , test )
+print(len(test))
