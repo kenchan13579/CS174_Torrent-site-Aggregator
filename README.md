@@ -1,4 +1,4 @@
-# CS174_Torrent-site-Aggregator
+# [CS174_Torrent-site-Aggregator](http://django.leungchan.net)
 
 Simple Django application that extracts from piratebay & kickass torrent sites in real time
 
