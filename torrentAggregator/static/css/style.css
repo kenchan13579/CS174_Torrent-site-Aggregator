@@ -8,107 +8,139 @@ body
          -o-background-size: cover;
             background-size: cover;
 }
-p {
-	 font-family: 'Indie Flower', cursive;
+p
+{
+    font-family: 'Indie Flower', cursive;
 }
 .container
 {
     width: 50%;
-    margin: 20% auto;
+    margin:0 auto;
+    padding-top:15%;
 }
 h1
 {
+    font-size: 5rem;
 
-		color:white;
-		font-size: 5rem;
     text-align: center;
+
+    color: white;
 }
-form {
-	margin-top: 25px;
+form
+{
+    margin-top: 25px;
 }
 /** waiting spinner **/
-.spinner-mask {
-    display:none;
-    width:100%;
-    height:100%;
+.spinner-mask
+{
     position: fixed;
-    top:0;
-    left:0;
-    background-color: rgba(0,0,0,0.3);
     z-index: 99;
-}
-.spinner-loader {
+    top: 0;
+    left: 0;
 
-    position:absolute;
-    top:50%;
-    left:48%;
+    display: none;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(0,0,0,.3);
+}
+.spinner-loader
+{
+    position: absolute;
+    top: 50%;
+    left: 48%;
 }
 
 /** cool radio buttons */
-.my-label {
-	color:white;
-	font-weight: bolder;
-	font-size: 2em;
-}
-#index ul {
-		display:inline-block;
-    list-style: none
-}
-#index ul li {
-    display:inline-block;
-    margin-right:5px;
-    border:1px solid white;
-    color:white;
+.my-label
+{
+    font-size: 2em;
     font-weight: bolder;
+
+    color: white;
 }
-.my-radio {
-	display: inline-block;
-	position:relative;
-	padding:10px 5px 0px 20px;
+#index ul
+{
+    display: inline-block;
+
+    list-style: none;
 }
-input[type=radio] {
-	display:none;
+#index ul li
+{
+    font-weight: bolder;
+
+    display: inline-block;
+
+    margin-right: 5px;
+
+    color: white;
+    border: 1px solid white;
 }
-input[type="radio"] p {
+.my-radio
+{
+    position: relative;
+
+    display: inline-block;
+
+    padding: 10px 5px 0 20px;
 }
-input[type=radio]:checked + p:after {
-    content:"";
-    width:100%;
-    background-color: rgba(195,238,231, 0.5);
-    position:absolute;
-    display:block;
-    height:100%;
-    top:0;
-    left:0;
-    z-index:-1;
+input[type=radio]
+{
+    display: none;
 }
-input[type=radio]:checked + p:before {
-    content:"\f00c";
-    position:absolute;
-    left:5px;
-    top:10px;
-    margin-right:15px;
+
+input[type=radio]:checked + p:after
+{
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    content: '';
+
+    background-color: rgba(195,238,231, .5);
+}
+input[type=radio]:checked + p:before
+{
+    position: absolute;
+    top: 10px;
+    left: 5px;
+
+    margin-right: 15px;
+
+    content: '\f00c';
 }
 #input-search
 {
+    font-family: 'Indie Flower', cursive;
     font-size: 2rem;
-		font-family: 'Indie Flower', cursive;
-		letter-spacing: 3px;
+
     width: 100%;
     height: 60px;
-    border:none;
-}
-#input-search:focus {
-	outline:none;
-}
 
-@media ( max-width: 1080px) {
-	.container {
-		width:80%;
-	}
-	h1 {
-		font-size: 2rem;
-	}
+    letter-spacing: 3px;
 
+    border: none;
+}
+#input-search:focus
+{
+    outline: none;
 }
 
+@media ( max-width: 1080px)
+{
+    .container
+    {
+        width: 80%;
+    }
+    h1
+    {
+        font-size: 2rem;
+    }
+}
