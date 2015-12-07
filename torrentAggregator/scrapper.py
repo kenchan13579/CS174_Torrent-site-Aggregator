@@ -1,6 +1,5 @@
 import re
 import time
-from datetime import date
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 from datetime import date, timedelta
@@ -176,20 +175,24 @@ def scrape(query ,filters=None):
 
 #input can be mm-dd hh:MM or mm-dd yyyy
 def parseDate(dateString):
-    result = ""
-    theString = dateString.split("-")
-    second = theString[1]
-    if  second[5] != ":":
-        theMonth = int(theString[0])
-        theYear = second[3:7]
-        theDay = second[0:2]
-        result = convertDate(int(theMonth), int(theDay), int(theYear))
-    else:
-        theMonth = int(theString[0])
-        theYear = 2015
-        theDay = second[0:2]
-        result = convertDate(int(theMonth), int(theDay), theYear)
-    return result
+    try:
+        result = ""
+        theString = dateString.split("-")
+        second = theString[1]
+        if  second[5] != ":":
+            theMonth = int(theString[0])
+            theYear = second[3:7]
+            theDay = second[0:2]
+            result = convertDate(int(theMonth), int(theDay), int(theYear))
+        else:
+            theMonth = int(theString[0])
+            theYear = 2015
+            theDay = second[0:2]
+            result = convertDate(int(theMonth), int(theDay), theYear)
+        return result
+    except Exception as e:#against XX mins ago
+        print(e)
+        return date.today()
 
 def convertDate(m, d, y):
     if y == 0:
