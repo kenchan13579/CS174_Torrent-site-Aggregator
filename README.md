@@ -6,5 +6,6 @@ Simple Django application that extracts from piratebay & kickass torrent sites i
 - install python3
 - install pip
 - pip install django==1.9
+- pip install whitenoise 
 - python manager.py runserver
 - go to localhost:8000

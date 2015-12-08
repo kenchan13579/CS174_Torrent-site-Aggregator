@@ -24,7 +24,7 @@
             <span class="tag tag-blue">Upload Time</span>
             <span class="tag tag-purple">Scrapped from</span>
     </div>
-
+    <div class="chatbox">Share the link to your friends with the shorten links</div>
     <table class="table table-bordered table-hover">
         <tr class="info">
             <td >Title</td>
@@ -33,8 +33,11 @@
         </tr>
         {% for torrent in data %}
         <tr class="pagination-item">
-            <td>
-            <a target="_blank" href="{{torrent.link}}">{{torrent.title}}</a>
+            <td >
+            <div style="position:relative">
+                <a target="_blank" href="{{torrent.link}}">{{torrent.title}}</a>
+                <span  class="icon-url-shortener animate">Share it</span>
+            </div>
             {% if torrent.numOfComments != '0' %}
             <span class='tag tag-red'>{{ torrent.numOfComments }}</span>
             {% endif %}
@@ -61,5 +64,7 @@
     </div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="{% static 'js/ZeroClipboard.min.js' %}"></script>
 <script src="{% static 'js/pagination.js' %}"></script>
+<script src="{% static 'js/urlShortener.js' %}"></script>
 </html>

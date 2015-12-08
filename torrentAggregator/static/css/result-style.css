@@ -1,44 +1,139 @@
+.animate
+{
+    -webkit-transition: all .5s ease-in-out;
+       -moz-transition: all .5s ease-in-out;
+        -ms-transition: all .5s ease-in-out;
+         -o-transition: all .5s ease-in-out;
+            transition: all .5s ease-in-out;
+}
+.chatbox
+{
+    font-weight: bold;
+
+    position: relative;
+
+    display: inline-block;
+
+    margin-bottom: 20px;
+    padding: 10px;
+
+    color: #40a9db;
+    border: 1px solid #80c6e7;
+    border-radius: 8px;
+}
+.chatbox:after
+{
+    position: absolute;
+    z-index: 9;
+    bottom: -10px;
+    left: 50px;
+
+    display: inline-block;
+
+    width: 0;
+
+    content: '';
+
+    border: 0 solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 9px solid #80c6e7;
+}
+.chatbox:before
+{
+    position: absolute;
+    z-index: 10;
+    bottom: -7px;
+    left: 51px;
+
+    display: inline-block;
+
+    width: 0;
+
+    content: '';
+
+    border: 0 solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 6px solid white;
+}
+/** share it icon */
+.icon-url-shortener
+{
+    font-size: .8em;
+
+    display: inline-block;
+
+    padding: 3px;
+
+    cursor: pointer;
+
+    color: #f1fafd;
+    border: 1px solid #0f3b87;
+    border-radius: 5px;
+    background-color: #205dc5 ;
+}
+.icon-url-shortener:hover
+{
+    background-color: #0f3b87;
+}
 /** tags **/
-.tag {
-    padding:3px 8px;
-    display:inline-block;
-    color:white;
+.tag
+{
+    font-size: .7em;
+
+    display: inline-block;
+
+    padding: 3px 8px;
+
+    letter-spacing: 1.5px;
+
+    color: white;
     border-radius: 7px;
 }
-.tag-red {
-    background-color: #FF3366;
+.tag-red
+{
+    background-color: #f36;
 }
-.tag-green {
+.tag-green
+{
     background-color: #00a05f;
 }
-.tag-blue {
-    background-color:#7b68ee;
+.tag-blue
+{
+    background-color: #7b68ee;
 }
-.tag-purple {
+.tag-purple
+{
     background-color: #9400d3;
 }
-.tag-orange {
-    background-color:#FFA500;
+.tag-orange
+{
+    background-color: #ffa500;
 }
-.tag-yellow {
+.tag-yellow
+{
     background-color: #f7c003;
 }
-.tag-lblue {
+.tag-lblue
+{
     background-color: #80c6e7;
 }
-#btn-back {
+#btn-back
+{
     position: fixed;
-    left: 0;
     top: 0;
+    left: 0;
 }
 /** pagaination button **/
 
-#prevPage {
+#prevPage
+{
     position: fixed;
-    left:0;
-    top:50%;
-}
-#nextPage {
-    position: fixed;
-    right: 0;
     top: 50%;
+    left: 0;
+}
+#nextPage
+{
+    position: fixed;
+    top: 50%;
+    right: 0;
+}
