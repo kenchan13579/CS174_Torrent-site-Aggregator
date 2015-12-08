@@ -18,8 +18,8 @@ $(document).ready(function() {
 
 				dis.html("&#10004 Copied to cliboard");
 				setTimeout(function(){
-					dis.html(shortenURL);
-				},2000);
+					dis.html("Share it");
+				},5000);
 			}
 		});
 		request.fail(function(data) {

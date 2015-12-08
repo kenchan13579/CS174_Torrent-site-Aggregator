@@ -111,23 +111,27 @@ def kickassScrapper(query ,result, url= None):
     soup = BeautifulSoup(html, "html.parser")
     rows = soup.select("table.data tr")[1:] # ignore the first header row
     for row in rows:
-        torrent = {}
-        newSoup = BeautifulSoup(str(row),"html.parser")
-        link = newSoup.select("a.cellMainLink")[0]
-        torrent["link"] = KICKASS_DOMAIN+link["href"]
-        torrent["title"] = "".join(re.findall(">(.*?)<", str(link)))
-        torrent["quality"] = getQuality(torrent['title'])
-        try :
-            torrent["numOfComments"] = newSoup.select(".icommentjs > .iconvalue")[0].string
-        except:
-            torrent["numOfComments"] = "0"
-        columns = newSoup.select("td")
-        torrent["size"] = parseSize(columns[1].contents)
-        torrent["uploadTime"] = getUploadTime(columns[3].string)
-        torrent["seeds"] = columns[4].string
-        torrent["leeches"] = columns[5].string
-        torrent["from"] = "Kickass Torrents"
-        result.append(torrent)
+        try:
+            torrent = {}
+            newSoup = BeautifulSoup(str(row),"html.parser")
+            link = newSoup.select("a.cellMainLink")[0]
+            torrent["link"] = KICKASS_DOMAIN+link["href"]
+            torrent["title"] = "".join(re.findall(">(.*?)<", str(link)))
+            torrent["quality"] = getQuality(torrent['title'])
+            try :
+                torrent["numOfComments"] = newSoup.select(".icommentjs > .iconvalue")[0].string
+            except:
+                torrent["numOfComments"] = "0"
+            columns = newSoup.select("td")
+            torrent["size"] = parseSize(columns[1].contents)
+            torrent["uploadTime"] = getUploadTime(columns[3].string)
+            torrent["seeds"] = columns[4].string
+            torrent["leeches"] = columns[5].string
+            torrent["from"] = "Kickass Torrents"
+            result.append(torrent)
+        except Exception as e:
+            print(e)
+
     if url == None:
         pagination = soup.find_all("a", class_= "turnoverButton siteButton bigButton" , attrs={'rel':True})
         thread_list = [] # list to store threads
