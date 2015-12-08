@@ -27,7 +27,7 @@ def piratebayScrapper(query , result , url=None):
         searchURL = url
         print(url)
     req = Request(searchURL, headers={'User-Agent': 'Mozilla/5.0'})
-    webpage = urlopen(req).read()
+    webpage = urlopen(req , timeout = 3).read()
     soup = BeautifulSoup(webpage, "html.parser")
     rows = soup.select("tr")[1:] # get rid of the header row
     for row in rows:
@@ -87,6 +87,7 @@ def piratebayScrapper(query , result , url=None):
         # wait for them to finish
         for t in thread_list:
             t.join()
+    print(searchURL + " : finished")
 
 '''
 scrapper for kickass torrent
@@ -139,6 +140,8 @@ def kickassScrapper(query ,result, url= None):
         # wait for them to finish
         for t in thread_list:
             t.join()
+    if url :
+        print(url+":finished")
 
 '''
 parse kickass's date format to mmm-dd-yyyy

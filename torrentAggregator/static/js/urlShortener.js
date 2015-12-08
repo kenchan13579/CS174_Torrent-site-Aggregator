@@ -15,11 +15,11 @@ $(document).ready(function() {
 				dis.attr("data-clipboard-text" , shortenURL);
 				// copy this link to clipboard
 				var clip = new ZeroClipboard(dis);
-				
+
 				dis.html("&#10004 Copied to cliboard");
 				setTimeout(function(){
-					dis.html("Share it");
-				},5000);
+					dis.html(shortenURL);
+				},2000);
 			}
 		});
 		request.fail(function(data) {
